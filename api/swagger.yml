@@ -16,23 +16,51 @@ paths:
         - tasks
       responses:
         200:
-          description: list the tasks
           schema:
             type: array
             items:
               $ref: "#/definitions/task"
+        default:
+          schema:
+            $ref: "#/definitions/error"
+    post:
+      tags:
+        - tasks
+      parameters:
+        - name: body
+          in: body
+          schema:
+            $ref: "#/definitions/createTask"
+      responses:
+        201:
+          schema:
+            $ref: "#/definitions/task"
+        400:
+          schema:
+            $ref: "#/definitions/error"
+        default:
+          schema:
+            $ref: "#/definitions/error"
 definitions:
   task:
     type: object
-    required:
-      - description
     properties:
       id:
         type: integer
         format: int64
-        readOnly: true
       description:
         type: string
-        minLength: 1
       completed:
         type: boolean
+  createTask:
+    type: object
+    properties:
+      description:
+        type: string
+  error:
+    type: object
+    properties:
+      errors:
+        type: array
+        items:
+          type: string
