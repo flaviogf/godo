@@ -4,9 +4,11 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/flaviogf/godo/api/models"
 	"github.com/go-playground/validator/v10"
+	"github.com/gorilla/mux"
 )
 
 func GetTasks(rw http.ResponseWriter, r *http.Request) {
@@ -43,7 +45,7 @@ func CreateTask(rw http.ResponseWriter, r *http.Request) {
 	encoder := json.NewEncoder(rw)
 
 	if err != nil {
-		log.Printf("cannot decode the request body: %s\n", err.Error())
+		log.Printf("could not decode the request body: %s\n", err.Error())
 
 		rw.WriteHeader(http.StatusInternalServerError)
 
@@ -55,7 +57,7 @@ func CreateTask(rw http.ResponseWriter, r *http.Request) {
 	err = validator.New().Struct(&body)
 
 	if err != nil {
-		log.Printf("cannot validate the request body: %s", err.Error())
+		log.Printf("could not validate the request body: %s", err.Error())
 
 		rw.WriteHeader(http.StatusBadRequest)
 
@@ -72,6 +74,40 @@ func CreateTask(rw http.ResponseWriter, r *http.Request) {
 		log.Printf("something went wrong: %s\n", err.Error())
 
 		rw.WriteHeader(http.StatusInternalServerError)
+
+		encoder.Encode(Failure(err.Error()))
+
+		return
+	}
+
+	encoder.Encode(Success(task))
+}
+
+func GetTask(rw http.ResponseWriter, r *http.Request) {
+	rw.Header().Set("Content-Type", "application/json")
+
+	vars := mux.Vars(r)
+
+	id, err := strconv.ParseInt(vars["id"], 10, 64)
+
+	encoder := json.NewEncoder(rw)
+
+	if err != nil {
+		log.Printf("could not parse the id: %s\n", err.Error())
+
+		rw.WriteHeader(http.StatusBadRequest)
+
+		encoder.Encode(Failure(err.Error()))
+
+		return
+	}
+
+	task, err := models.GetTask(id)
+
+	if err != nil {
+		log.Printf("could not find the task: %s", err.Error())
+
+		rw.WriteHeader(http.StatusNotFound)
 
 		encoder.Encode(Failure(err.Error()))
 

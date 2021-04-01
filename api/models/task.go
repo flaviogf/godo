@@ -36,6 +36,26 @@ func GetTasks() ([]*Task, error) {
 	return tasks, nil
 }
 
+func GetTask(id int64) (*Task, error) {
+	row := DB.QueryRow("SELECT id, description, completed FROM tasks WHERE id = ?", id)
+
+	err := row.Err()
+
+	if err != nil {
+		return nil, err
+	}
+
+	task := &Task{}
+
+	err = row.Scan(&task.ID, &task.Description, &task.Completed)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return task, nil
+}
+
 func (t *Task) Save() error {
 	stmt, err := DB.Prepare("INSERT INTO tasks (description, completed, created_at, updated_at) VALUES (?, ?, ?, ?)")
 

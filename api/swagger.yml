@@ -41,13 +41,31 @@ paths:
         default:
           schema:
             $ref: "#/definitions/response"
+  /{id}:
+    get:
+      tags:
+        - tasks
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/getTaskResponse"
+        404:
+          schema:
+            $ref: "#/definitions/response"
+        default:
+          schema:
+            $ref: "#/definitions/response"
 definitions:
   task:
     type: object
     properties:
       id:
         type: integer
-        format: int64
       description:
         type: string
       completed:
@@ -57,6 +75,15 @@ definitions:
     properties:
       data:
         type: object
+      errors:
+        type: array
+        items:
+          type: string
+  getTaskResponse:
+    type: object
+    properties:
+      data:
+        $ref: "#/definitions/task"
       errors:
         type: array
         items:
