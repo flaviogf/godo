@@ -5,8 +5,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/flaviogf/godo/api/data"
 	"github.com/flaviogf/godo/api/handlers"
+	"github.com/flaviogf/godo/api/models"
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/gorilla/mux"
 
@@ -22,7 +22,7 @@ func main() {
 
 	defer db.Close()
 
-	data.DB = db
+	models.DB = db
 
 	r := mux.NewRouter()
 

@@ -1,10 +1,6 @@
-package task
+package models
 
-import (
-	"time"
-
-	"github.com/flaviogf/godo/api/data"
-)
+import "time"
 
 type Task struct {
 	ID          int64  `json:"id"`
@@ -23,7 +19,7 @@ func NewTask(description string) *Task {
 func GetTasks() ([]*Task, error) {
 	tasks := []*Task{}
 
-	rows, err := data.DB.Query("SELECT id, description, completed FROM tasks")
+	rows, err := DB.Query("SELECT id, description, completed FROM tasks")
 
 	if err != nil {
 		return tasks, err
@@ -41,7 +37,7 @@ func GetTasks() ([]*Task, error) {
 }
 
 func (t *Task) Save() error {
-	stmt, err := data.DB.Prepare("INSERT INTO tasks (description, completed, created_at, updated_at) VALUES (?, ?, ?, ?)")
+	stmt, err := DB.Prepare("INSERT INTO tasks (description, completed, created_at, updated_at) VALUES (?, ?, ?, ?)")
 
 	if err != nil {
 		return err

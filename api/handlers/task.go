@@ -5,26 +5,28 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/flaviogf/godo/api/task"
+	"github.com/flaviogf/godo/api/models"
 	"github.com/go-playground/validator/v10"
 )
 
 func GetTasks(rw http.ResponseWriter, r *http.Request) {
 	rw.Header().Set("Content-Type", "application/json")
 
-	var results, err = task.GetTasks()
+	var tasks, err = models.GetTasks()
+
+	encoder := json.NewEncoder(rw)
 
 	if err != nil {
+		log.Printf("something went wrong: %s\n", err.Error())
+
 		rw.WriteHeader(http.StatusInternalServerError)
 
-		log.Printf("something went wrong: %s\n", err.Error())
+		encoder.Encode(Failure(err.Error()))
 
 		return
 	}
 
-	encoder := json.NewEncoder(rw)
-
-	encoder.Encode(results)
+	encoder.Encode(Success(tasks))
 }
 
 func CreateTask(rw http.ResponseWriter, r *http.Request) {
@@ -38,10 +40,14 @@ func CreateTask(rw http.ResponseWriter, r *http.Request) {
 
 	err := decoder.Decode(&body)
 
+	encoder := json.NewEncoder(rw)
+
 	if err != nil {
+		log.Printf("cannot decode the request body: %s\n", err.Error())
+
 		rw.WriteHeader(http.StatusInternalServerError)
 
-		log.Printf("cannot decode the request body: %s\n", err.Error())
+		encoder.Encode(Failure(err.Error()))
 
 		return
 	}
@@ -49,26 +55,28 @@ func CreateTask(rw http.ResponseWriter, r *http.Request) {
 	err = validator.New().Struct(&body)
 
 	if err != nil {
-		rw.WriteHeader(http.StatusBadRequest)
-
 		log.Printf("cannot validate the request body: %s", err.Error())
 
+		rw.WriteHeader(http.StatusBadRequest)
+
+		encoder.Encode(Failure(err.Error()))
+
 		return
 	}
 
-	result := task.NewTask(body.Description)
+	task := models.NewTask(body.Description)
 
-	err = result.Save()
+	err = task.Save()
 
 	if err != nil {
+		log.Printf("something went wrong: %s\n", err.Error())
+
 		rw.WriteHeader(http.StatusInternalServerError)
 
-		log.Printf("something went wrong: %s\n", err.Error())
+		encoder.Encode(Failure(err.Error()))
 
 		return
 	}
 
-	encoder := json.NewEncoder(rw)
-
-	encoder.Encode(result)
+	encoder.Encode(Success(task))
 }
