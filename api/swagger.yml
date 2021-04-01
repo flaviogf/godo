@@ -60,6 +60,31 @@ paths:
         default:
           schema:
             $ref: "#/definitions/response"
+    put:
+      tags:
+        - tasks
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+        - name: body
+          in: body
+          schema:
+            $ref: "#/definitions/createTaskRequest"
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/createTaskResponse"
+        400:
+          schema:
+            $ref: "#/definitions/response"
+        404:
+          schema:
+            $ref: "#/definitions/response"
+        default:
+          schema:
+            $ref: "#/definitions/response"
   /{id}/completed:
     post:
       tags:

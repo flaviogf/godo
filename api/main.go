@@ -32,6 +32,8 @@ func main() {
 
 	r.HandleFunc("/{id}", handlers.GetTask).Methods("GET")
 
+	r.HandleFunc("/{id}", handlers.UpdateTask).Methods("PUT")
+
 	r.HandleFunc("/{id}/completed", handlers.MakeTaskComplete).Methods("POST")
 
 	r.HandleFunc("/{id}/completed", handlers.MakeTaskIncomplete).Methods("DELETE")

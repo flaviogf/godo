@@ -66,7 +66,7 @@ func CreateTask(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	task := models.NewTask(body.Description)
+	task := models.NewTask(0, body.Description, false)
 
 	err = task.Save()
 
@@ -105,7 +105,7 @@ func GetTask(rw http.ResponseWriter, r *http.Request) {
 	task, err := models.GetTask(id)
 
 	if err != nil {
-		log.Printf("could not found the task: %s\n", err.Error())
+		log.Printf("could not find the task: %s\n", err.Error())
 
 		rw.WriteHeader(http.StatusNotFound)
 
@@ -115,6 +115,84 @@ func GetTask(rw http.ResponseWriter, r *http.Request) {
 	}
 
 	encoder.Encode(Success(task))
+}
+
+func UpdateTask(rw http.ResponseWriter, r *http.Request) {
+	rw.Header().Set("Content-Type", "application/json")
+
+	vars := mux.Vars(r)
+
+	id, err := strconv.ParseInt(vars["id"], 10, 64)
+
+	encoder := json.NewEncoder(rw)
+
+	if err != nil {
+		log.Printf("could not parse the id: %s\n", err.Error())
+
+		rw.WriteHeader(http.StatusNotFound)
+
+		encoder.Encode(Failure(err.Error()))
+
+		return
+	}
+
+	task, err := models.GetTask(id)
+
+	if err != nil {
+		log.Printf("could not find the task: %s\n", err.Error())
+
+		rw.WriteHeader(http.StatusNotFound)
+
+		encoder.Encode(Failure(err.Error()))
+
+		return
+	}
+
+	body := struct {
+		Description string `json:"description" validate:"required"`
+	}{}
+
+	decoder := json.NewDecoder(r.Body)
+
+	err = decoder.Decode(&body)
+
+	if err != nil {
+		log.Printf("could not decode the request body: %s\n", err.Error())
+
+		rw.WriteHeader(http.StatusInternalServerError)
+
+		encoder.Encode(Failure(err.Error()))
+
+		return
+	}
+
+	err = validator.New().Struct(&body)
+
+	if err != nil {
+		log.Printf("could not validate the request body: %s\n", err.Error())
+
+		rw.WriteHeader(http.StatusBadRequest)
+
+		encoder.Encode(Failure(err.Error()))
+
+		return
+	}
+
+	newTask := models.NewTask(task.ID, body.Description, task.Completed)
+
+	err = newTask.Save()
+
+	if err != nil {
+		log.Printf("could not save the task: %s\n", err.Error())
+
+		rw.WriteHeader(http.StatusInternalServerError)
+
+		encoder.Encode(Failure(err.Error()))
+
+		return
+	}
+
+	encoder.Encode(Success(newTask))
 }
 
 func MakeTaskComplete(rw http.ResponseWriter, r *http.Request) {
@@ -139,7 +217,7 @@ func MakeTaskComplete(rw http.ResponseWriter, r *http.Request) {
 	task, err := models.GetTask(id)
 
 	if err != nil {
-		log.Printf("could not found the task: %s\n", err.Error())
+		log.Printf("could not find the task: %s\n", err.Error())
 
 		rw.WriteHeader(http.StatusNotFound)
 
@@ -187,7 +265,7 @@ func MakeTaskIncomplete(rw http.ResponseWriter, r *http.Request) {
 	task, err := models.GetTask(id)
 
 	if err != nil {
-		log.Printf("could not found the task: %s\n", err.Error())
+		log.Printf("could not find the task: %s\n", err.Error())
 
 		rw.WriteHeader(http.StatusNotFound)
 

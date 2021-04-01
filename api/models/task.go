@@ -8,11 +8,11 @@ type Task struct {
 	Completed   bool   `json:"completed"`
 }
 
-func NewTask(description string) *Task {
+func NewTask(id int64, description string, completed bool) *Task {
 	return &Task{
-		ID:          0,
+		ID:          id,
 		Description: description,
-		Completed:   false,
+		Completed:   completed,
 	}
 }
 
