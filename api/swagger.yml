@@ -19,10 +19,10 @@ paths:
           schema:
             type: array
             items:
-              $ref: "#/definitions/task"
+              $ref: "#/definitions/getTasksResponse"
         default:
           schema:
-            $ref: "#/definitions/error"
+            $ref: "#/definitions/response"
     post:
       tags:
         - tasks
@@ -30,17 +30,17 @@ paths:
         - name: body
           in: body
           schema:
-            $ref: "#/definitions/createTask"
+            $ref: "#/definitions/createTaskRequest"
       responses:
         201:
           schema:
-            $ref: "#/definitions/task"
+            $ref: "#/definitions/createTaskResponse"
         400:
           schema:
-            $ref: "#/definitions/error"
+            $ref: "#/definitions/response"
         default:
           schema:
-            $ref: "#/definitions/error"
+            $ref: "#/definitions/response"
 definitions:
   task:
     type: object
@@ -52,14 +52,36 @@ definitions:
         type: string
       completed:
         type: boolean
-  createTask:
+  response:
+    type: object
+    properties:
+      data:
+        type: object
+      errors:
+        type: array
+        items:
+          type: string
+  getTasksResponse:
+    type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: "#/definitions/task"
+      errors:
+        type: array
+        items:
+          type: string
+  createTaskRequest:
     type: object
     properties:
       description:
         type: string
-  error:
+  createTaskResponse:
     type: object
     properties:
+      data:
+        $ref: "#/definitions/task"
       errors:
         type: array
         items:
