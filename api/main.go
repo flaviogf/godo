@@ -32,6 +32,10 @@ func main() {
 
 	r.HandleFunc("/{id}", handlers.GetTask).Methods("GET")
 
+	r.HandleFunc("/{id}/completed", handlers.MakeTaskComplete).Methods("POST")
+
+	r.HandleFunc("/{id}/completed", handlers.MakeTaskIncomplete).Methods("DELETE")
+
 	http.Handle("/", r)
 
 	http.Handle("/docs", middleware.SwaggerUI(middleware.SwaggerUIOpts{SpecURL: "/swagger.yml"}, nil))

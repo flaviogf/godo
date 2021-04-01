@@ -60,6 +60,43 @@ paths:
         default:
           schema:
             $ref: "#/definitions/response"
+  /{id}/completed:
+    post:
+      tags:
+        - tasks
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/getTaskResponse"
+        404:
+          schema:
+            $ref: "#/definitions/response"
+        default:
+          schema:
+            $ref: "#/definitions/response"
+    delete:
+      tags:
+        - tasks
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/getTaskResponse"
+        404:
+          schema:
+            $ref: "#/definitions/response"
+        default:
+          schema:
+            $ref: "#/definitions/response"
 definitions:
   task:
     type: object

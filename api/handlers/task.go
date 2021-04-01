@@ -57,7 +57,7 @@ func CreateTask(rw http.ResponseWriter, r *http.Request) {
 	err = validator.New().Struct(&body)
 
 	if err != nil {
-		log.Printf("could not validate the request body: %s", err.Error())
+		log.Printf("could not validate the request body: %s\n", err.Error())
 
 		rw.WriteHeader(http.StatusBadRequest)
 
@@ -105,9 +105,105 @@ func GetTask(rw http.ResponseWriter, r *http.Request) {
 	task, err := models.GetTask(id)
 
 	if err != nil {
-		log.Printf("could not find the task: %s", err.Error())
+		log.Printf("could not found the task: %s\n", err.Error())
 
 		rw.WriteHeader(http.StatusNotFound)
+
+		encoder.Encode(Failure(err.Error()))
+
+		return
+	}
+
+	encoder.Encode(Success(task))
+}
+
+func MakeTaskComplete(rw http.ResponseWriter, r *http.Request) {
+	rw.Header().Set("Content-Type", "application/json")
+
+	vars := mux.Vars(r)
+
+	id, err := strconv.ParseInt(vars["id"], 10, 64)
+
+	encoder := json.NewEncoder(rw)
+
+	if err != nil {
+		log.Printf("could not parse the id: %s\n", err.Error())
+
+		rw.WriteHeader(http.StatusBadRequest)
+
+		encoder.Encode(Failure(err.Error()))
+
+		return
+	}
+
+	task, err := models.GetTask(id)
+
+	if err != nil {
+		log.Printf("could not found the task: %s\n", err.Error())
+
+		rw.WriteHeader(http.StatusNotFound)
+
+		encoder.Encode(Failure(err.Error()))
+
+		return
+	}
+
+	task.MakeComplete()
+
+	err = task.Save()
+
+	if err != nil {
+		log.Printf("could not save the task: %s\n", err.Error())
+
+		rw.WriteHeader(http.StatusInternalServerError)
+
+		encoder.Encode(Failure(err.Error()))
+
+		return
+	}
+
+	encoder.Encode(Success(task))
+}
+
+func MakeTaskIncomplete(rw http.ResponseWriter, r *http.Request) {
+	rw.Header().Set("Content-Type", "application/json")
+
+	vars := mux.Vars(r)
+
+	id, err := strconv.ParseInt(vars["id"], 10, 64)
+
+	encoder := json.NewEncoder(rw)
+
+	if err != nil {
+		log.Printf("could not parse the id: %s\n", err.Error())
+
+		rw.WriteHeader(http.StatusBadRequest)
+
+		encoder.Encode(Failure(err.Error()))
+
+		return
+	}
+
+	task, err := models.GetTask(id)
+
+	if err != nil {
+		log.Printf("could not found the task: %s\n", err.Error())
+
+		rw.WriteHeader(http.StatusNotFound)
+
+		encoder.Encode(Failure(err.Error()))
+
+		return
+	}
+
+	task.MakeIncomplete()
+
+	err = task.Save()
+
+	if err != nil {
+		log.Printf("could not save the task: %s\n", err.Error())
+
+		rw.WriteHeader(http.StatusInternalServerError)
 
 		encoder.Encode(Failure(err.Error()))
 

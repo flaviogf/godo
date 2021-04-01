@@ -56,7 +56,23 @@ func GetTask(id int64) (*Task, error) {
 	return task, nil
 }
 
+func (t *Task) MakeComplete() {
+	t.Completed = true
+}
+
+func (t *Task) MakeIncomplete() {
+	t.Completed = false
+}
+
 func (t *Task) Save() error {
+	if t.ID <= 0 {
+		return t.create()
+	}
+
+	return t.update()
+}
+
+func (t *Task) create() error {
 	stmt, err := DB.Prepare("INSERT INTO tasks (description, completed, created_at, updated_at) VALUES (?, ?, ?, ?)")
 
 	if err != nil {
@@ -72,6 +88,22 @@ func (t *Task) Save() error {
 	}
 
 	t.ID, err = result.LastInsertId()
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (t *Task) update() error {
+	stmt, err := DB.Prepare("UPDATE tasks SET description = ?, completed = ?, updated_at = ? WHERE id = ?")
+
+	if err != nil {
+		return err
+	}
+
+	_, err = stmt.Exec(t.Description, t.Completed, time.Now(), t.ID)
 
 	if err != nil {
 		return err
