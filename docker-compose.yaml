@@ -1,0 +1,9 @@
+version: "3.9"
+
+services:
+  api:
+    build: ./api
+    image: flaviogf/godo-api
+    container_name: godo-api
+    ports:
+      - 3000:3000
