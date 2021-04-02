@@ -19,7 +19,7 @@ func NewTask(id int64, description string, completed bool) *Task {
 func GetTasks() ([]*Task, error) {
 	tasks := []*Task{}
 
-	rows, err := DB.Query("SELECT id, description, completed FROM tasks")
+	rows, err := DB.Query("SELECT id, description, completed FROM tasks WHERE deleted_at IS NULL")
 
 	if err != nil {
 		return tasks, err
@@ -37,7 +37,7 @@ func GetTasks() ([]*Task, error) {
 }
 
 func GetTask(id int64) (*Task, error) {
-	row := DB.QueryRow("SELECT id, description, completed FROM tasks WHERE id = ?", id)
+	row := DB.QueryRow("SELECT id, description, completed FROM tasks WHERE id = ? AND deleted_at IS NULL", id)
 
 	err := row.Err()
 
@@ -70,6 +70,22 @@ func (t *Task) Save() error {
 	}
 
 	return t.update()
+}
+
+func (t *Task) Delete() error {
+	stmt, err := DB.Prepare("UPDATE tasks SET deleted_at = ? WHERE id = ?")
+
+	if err != nil {
+		return err
+	}
+
+	_, err = stmt.Exec(time.Now(), t.ID)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (t *Task) create() error {

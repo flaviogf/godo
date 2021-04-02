@@ -34,7 +34,7 @@ paths:
       responses:
         201:
           schema:
-            $ref: "#/definitions/createTaskResponse"
+            $ref: "#/definitions/getTaskResponse"
         400:
           schema:
             $ref: "#/definitions/response"
@@ -75,10 +75,28 @@ paths:
       responses:
         200:
           schema:
-            $ref: "#/definitions/createTaskResponse"
+            $ref: "#/definitions/getTaskResponse"
         400:
           schema:
             $ref: "#/definitions/response"
+        404:
+          schema:
+            $ref: "#/definitions/response"
+        default:
+          schema:
+            $ref: "#/definitions/response"
+    delete:
+      tags:
+        - tasks
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/getTaskResponse"
         404:
           schema:
             $ref: "#/definitions/response"
@@ -166,12 +184,3 @@ definitions:
     properties:
       description:
         type: string
-  createTaskResponse:
-    type: object
-    properties:
-      data:
-        $ref: "#/definitions/task"
-      errors:
-        type: array
-        items:
-          type: string

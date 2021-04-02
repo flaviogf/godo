@@ -1,19 +1,19 @@
 package handlers
 
-type Envelope struct {
+type Response struct {
 	Data   interface{} `json:"data"`
 	Errors []string    `json:"errors"`
 }
 
-func Success(data interface{}) *Envelope {
-	return &Envelope{
+func Success(data interface{}) *Response {
+	return &Response{
 		Data:   data,
 		Errors: []string{},
 	}
 }
 
-func Failure(errors ...string) *Envelope {
-	return &Envelope{
+func Failure(errors ...string) *Response {
+	return &Response{
 		Data:   struct{}{},
 		Errors: errors,
 	}

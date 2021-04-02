@@ -195,6 +195,52 @@ func UpdateTask(rw http.ResponseWriter, r *http.Request) {
 	encoder.Encode(Success(newTask))
 }
 
+func DeleteTask(rw http.ResponseWriter, r *http.Request) {
+	rw.Header().Set("Content-Type", "application/json")
+
+	vars := mux.Vars(r)
+
+	id, err := strconv.ParseInt(vars["id"], 10, 64)
+
+	encoder := json.NewEncoder(rw)
+
+	if err != nil {
+		log.Printf("could not parse the id: %s\n", err.Error())
+
+		rw.WriteHeader(http.StatusInternalServerError)
+
+		encoder.Encode(Failure(err.Error()))
+
+		return
+	}
+
+	task, err := models.GetTask(id)
+
+	if err != nil {
+		log.Printf("could not find the task: %s\n", err.Error())
+
+		rw.WriteHeader(http.StatusNotFound)
+
+		encoder.Encode(Failure(err.Error()))
+
+		return
+	}
+
+	err = task.Delete()
+
+	if err != nil {
+		log.Printf("could not delete the task: %s\n", err.Error())
+
+		rw.WriteHeader(http.StatusInternalServerError)
+
+		encoder.Encode(Failure(err.Error()))
+
+		return
+	}
+
+	encoder.Encode(Success(task))
+}
+
 func MakeTaskComplete(rw http.ResponseWriter, r *http.Request) {
 	rw.Header().Set("Content-Type", "application/json")
 
