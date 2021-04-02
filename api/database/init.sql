@@ -4,4 +4,4 @@ CREATE TABLE tasks (
   completed BOOLEAN NOT NULL,
   created_at DATETIME NOT NULL,
   updated_at DATETIME NOT NULL
-)
+);
