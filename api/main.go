@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/flaviogf/godo/api/handlers"
 	"github.com/flaviogf/godo/api/models"
@@ -14,7 +15,7 @@ import (
 )
 
 func main() {
-	db, err := sql.Open("sqlite3", "godo.sqlite3")
+	db, err := sql.Open("sqlite3", os.Getenv("GODO_DATABASE"))
 
 	if err != nil {
 		log.Fatal(err)
@@ -44,5 +45,5 @@ func main() {
 
 	http.Handle("/swagger.yml", http.FileServer(http.Dir("./")))
 
-	http.ListenAndServe(":3000", nil)
+	http.ListenAndServe(os.Getenv("GODO_ADDR"), nil)
 }
