@@ -1,0 +1,40 @@
+.godo-alert {
+  position: fixed;
+  bottom: 16px;
+  left: 16px;
+  height: 45px;
+  width: 250px;
+  background-color: var(--danger);
+  color: var(--text-danger);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  border-radius: 3px;
+  box-shadow: 0px 3px 6px rgb(0 0 0 / 16%), 0px 3px 6px rgb(0 0 0 / 23%);
+}
+
+.godo-alert--hidden {
+  display: none;
+}
+
+.godo-alert p {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.godo-alert span {
+  display: flex;
+  position: absolute;
+  height: 25px;
+  width: 25px;
+  right: -12px;
+  top: -10px;
+  cursor: pointer;
+  background-color: var(--text-danger);
+  border-radius: 100%;
+  align-items: center;
+  justify-content: center;
+  color: var(--danger);
+  box-shadow: 0px 1px 2px rgb(0 0 0 / 12%), 0px 1px 2px rgb(0 0 0 / 24%);
+}

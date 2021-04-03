@@ -1,4 +1,11 @@
 {{define "footer.html"}}
+  {{if .Err}}
+  <div class="godo-alert">
+    <p title="{{.Err}}">{{.Err}}</p>
+    <span>x</span>
+  </div>
+  {{end}}
+  <script src="/public/js/alert/alert.js"></script>
   </body>
 </html>
 {{end}}

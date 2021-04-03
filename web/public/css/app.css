@@ -1,12 +1,19 @@
 :root {
+  --background-color: #f2f2f2;
   --primary-color: #0e5ba8;
   --text-primary-color: #d8dde3;
   --text-secondary-color: #808080;
   --text-tertiary-color: #202020;
   --separator: #dddddd;
+  --danger: #db4c3f;
+  --text-danger: white;
 }
 
 * {
   font-family: "Roboto", sans-serif;
   font-weight: 300;
+}
+
+body {
+  background-color: var(--background-color);
 }
