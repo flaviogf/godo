@@ -55,6 +55,47 @@
   white-space: nowrap;
 }
 
+.godo-task__input {
+  border: 1px solid var(--separator);
+  border-radius: 5px;
+  font-size: 14px;
+  line-height: 20px;
+  margin-top: 6px;
+  outline: none;
+  padding: 8px;
+  resize: none;
+  width: 100%;
+}
+
+.godo-task__buttons {
+  display: flex;
+}
+
+.godo-task__button {
+  background-color: transparent;
+  color: var(--primary-color);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  height: 34px;
+  outline: none;
+  width: 75px;
+}
+
+.godo-task__button:hover {
+  text-decoration: underline;
+}
+
+.godo-task__button--primary {
+  background-color: var(--primary-color);
+  color: var(--text-primary-color);
+}
+
+.godo-task__button--primary:hover {
+  text-decoration: none;
+}
+
 @media (min-width: 1024px) {
   .godo-task__container {
     padding: 0;

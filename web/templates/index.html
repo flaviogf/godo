@@ -11,6 +11,15 @@
         </li>
         {{end}}
       </ul>
+
+      <form method="POST">
+        <textarea class="godo-task__input" rows="2" id="description" name="description"></textarea>
+
+        <div class="godo-task__buttons">
+          <button class="godo-task__button godo-task__button--primary" type="submit">Add task</button>
+          <button class="godo-task__button" type="button">Cancel</button>
+        </div>
+      </form>
     </main>
     {{template "footer.html" .}}
 {{end}}
