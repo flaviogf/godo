@@ -81,7 +81,7 @@ func (t *Task) Save() error {
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return errors.New(body.Errors[0])
+		return errors.New("could not save the task")
 	}
 
 	return nil
