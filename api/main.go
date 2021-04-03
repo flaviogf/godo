@@ -43,9 +43,9 @@ func main() {
 
 	http.Handle("/", r)
 
-	http.Handle("/docs", middleware.SwaggerUI(middleware.SwaggerUIOpts{SpecURL: "/swagger.yml"}, nil))
+	http.Handle("/docs", middleware.SwaggerUI(middleware.SwaggerUIOpts{SpecURL: "/swagger.yaml"}, nil))
 
-	http.Handle("/swagger.yml", http.FileServer(http.Dir("./")))
+	http.Handle("/swagger.yaml", http.FileServer(http.Dir("./")))
 
 	http.ListenAndServe(os.Getenv("GODO_ADDR"), nil)
 }
