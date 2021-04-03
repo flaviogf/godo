@@ -1,0 +1,62 @@
+.godo-task__container {
+  max-width: 800px;
+  margin: 40px auto 0 auto;
+  padding: 0 16px;
+  width: 100%;
+}
+
+.godo-task__list {
+  list-style: none;
+  margin-top: 20px;
+}
+
+.godo-task__title {
+  align-items: flex-end;
+  color: var(--text-tertiary-color);
+  display: flex;
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.godo-task__title sub {
+  color: var(--text-secondary-color);
+  font-weight: 300;
+  font-size: 12px;
+  margin-left: 4px;
+}
+
+.godo-task__item {
+  align-items: center;
+  border-bottom: 1px solid var(--separator);
+  display: flex;
+  padding-bottom: 28px;
+  padding-top: 12px;
+}
+
+.godo-task__item:first-child {
+  padding-top: 0px;
+}
+
+.godo-task__checkbox {
+  cursor: pointer;
+  margin-right: 14px;
+}
+
+.godo-task__checkbox:checked + .godo-task__text {
+  color: var(--text-secondary-color);
+  text-decoration: line-through;
+}
+
+.godo-task__text {
+  color: var(--text-tertiary-color);
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (min-width: 1024px) {
+  .godo-task__container {
+    padding: 0;
+  }
+}

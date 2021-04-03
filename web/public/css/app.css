@@ -1,0 +1,12 @@
+:root {
+  --primary-color: #0e5ba8;
+  --text-primary-color: #d8dde3;
+  --text-secondary-color: #808080;
+  --text-tertiary-color: #202020;
+  --separator: #808080;
+}
+
+* {
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+}
