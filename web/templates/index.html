@@ -4,7 +4,7 @@
       <h1 class="godo-task__title">Today <sub>Sat apr 3</sub></h1>
 
       <ul class="godo-task__list">
-        {{range .Data}}
+        {{range .Tasks}}
         <li class="godo-task__item" data-id="{{.ID}}">
           <input class="godo-task__checkbox" type="checkbox" {{if .Completed}}checked{{end}} />
           <span class="godo-task__text">{{.Description}}</span>
@@ -13,7 +13,7 @@
       </ul>
 
       <form method="POST">
-        <textarea class="godo-task__input" rows="2" id="description" name="description"></textarea>
+        <textarea class="godo-task__input" rows="2" id="description" name="description">{{.Description}}</textarea>
 
         <div class="godo-task__buttons">
           <button class="godo-task__button godo-task__button--primary" type="submit">Add task</button>

@@ -18,6 +18,8 @@ func main() {
 
 	r.HandleFunc("/", handlers.Index).Methods("GET")
 
+	r.HandleFunc("/", handlers.Store).Methods("POST")
+
 	http.Handle("/", r)
 
 	http.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))
