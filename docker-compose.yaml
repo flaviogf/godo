@@ -7,3 +7,15 @@ services:
     container_name: godo-api
     ports:
       - 3000:3000
+    volumes:
+      - "database:/go/src/database"
+  web:
+    build: ./web
+    image: flaviogf/godo-web
+    container_name: godo-web
+    ports:
+      - 3001:3001
+
+volumes:
+  database:
+
