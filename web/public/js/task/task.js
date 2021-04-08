@@ -6,4 +6,10 @@
 
     return document.querySelector("button[type=submit]").setAttribute("disabled", true);
   });
+
+  document.querySelectorAll(".godo-task__checkbox").forEach(function (it) {
+    it.addEventListener("change", function () {
+      this.parentNode.submit();
+    });
+  });
 })();

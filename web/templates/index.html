@@ -6,8 +6,17 @@
       <ul class="godo-task__list">
         {{range .Tasks}}
         <li class="godo-task__item" data-id="{{.ID}}">
-          <input class="godo-task__checkbox" type="checkbox" {{if .Completed}}checked{{end}} />
-          <span class="godo-task__text">{{.Description}}</span>
+          {{if .Completed}}
+          <form method="POST" action="/{{.ID}}/make-task-incomplete">
+            <input class="godo-task__checkbox" type="checkbox" checked id="completed-{{.ID}}" name="completed" />
+            <span class="godo-task__text">{{.Description}}</span>
+          </form>
+          {{else}}
+          <form method="POST" action="/{{.ID}}/make-task-complete">
+            <input class="godo-task__checkbox" type="checkbox" id="completed-{{.ID}}" name="completed" />
+            <span class="godo-task__text">{{.Description}}</span>
+          </form>
+          {{end}}
         </li>
         {{end}}
       </ul>

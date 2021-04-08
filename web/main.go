@@ -16,9 +16,13 @@ func main() {
 
 	r := mux.NewRouter()
 
-	r.HandleFunc("/", handlers.Index).Methods("GET")
+	r.HandleFunc("/", handlers.GetTasks).Methods("GET")
 
-	r.HandleFunc("/", handlers.Store).Methods("POST")
+	r.HandleFunc("/", handlers.CreateTask).Methods("POST")
+
+	r.HandleFunc("/{id}/make-task-complete", handlers.MakeTaskComplete).Methods("POST")
+
+	r.HandleFunc("/{id}/make-task-incomplete", handlers.MakeTaskIncomplete).Methods("POST")
 
 	http.Handle("/", r)
 

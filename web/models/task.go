@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -45,6 +46,66 @@ func GetTasks() ([]*Task, error) {
 
 	if err != nil {
 		return []*Task{}, err
+	}
+
+	return body.Data, nil
+}
+
+func MakeTaskComplete(id int) (*Task, error) {
+	resp, err := http.Post(fmt.Sprintf("%s/%d/completed", os.Getenv("GODO_API"), id), "application/json", nil)
+
+	if err != nil {
+		return &Task{}, err
+	}
+
+	bytes, err := ioutil.ReadAll(resp.Body)
+
+	if err != nil {
+		return &Task{}, err
+	}
+
+	body := struct {
+		Data   *Task    `json:"data"`
+		Errors []string `json:"errors"`
+	}{}
+
+	err = json.Unmarshal(bytes, &body)
+
+	if err != nil {
+		return &Task{}, err
+	}
+
+	return body.Data, nil
+}
+
+func MakeTaskIncomplete(id int) (*Task, error) {
+	req, err := http.NewRequest(http.MethodDelete, fmt.Sprintf("%s/%d/completed", os.Getenv("GODO_API"), id), nil)
+
+	if err != nil {
+		return &Task{}, err
+	}
+
+	resp, err := http.DefaultClient.Do(req)
+
+	if err != nil {
+		return &Task{}, err
+	}
+
+	bytes, err := ioutil.ReadAll(resp.Body)
+
+	if err != nil {
+		return &Task{}, err
+	}
+
+	body := struct {
+		Data   *Task    `json:"data"`
+		Errors []string `json:"errors"`
+	}{}
+
+	err = json.Unmarshal(bytes, &body)
+
+	if err != nil {
+		return &Task{}, err
 	}
 
 	return body.Data, nil
