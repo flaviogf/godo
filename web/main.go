@@ -24,6 +24,8 @@ func main() {
 
 	r.HandleFunc("/{id}/make-task-incomplete", handlers.MakeTaskIncomplete).Methods("POST")
 
+	r.HandleFunc("/{id}/delete", handlers.DeleteTask).Methods("POST")
+
 	http.Handle("/", r)
 
 	http.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))

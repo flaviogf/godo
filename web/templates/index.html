@@ -1,7 +1,7 @@
 {{define "index.html"}}
     {{template "header.html" .}}
     <main class="godo-task__container">
-      <h1 class="godo-task__title">Today <sub>Sat apr 3</sub></h1>
+      <h1 class="godo-task__title">Today <sub>{{.Today}}</sub></h1>
 
       <ul class="godo-task__list">
         {{range .Tasks}}
@@ -11,10 +11,16 @@
             <input class="godo-task__checkbox" type="checkbox" checked id="completed-{{.ID}}" name="completed" />
             <span class="godo-task__text">{{.Description}}</span>
           </form>
+          <form method="POST" action="/{{.ID}}/delete">
+            <i class="godo-task__trash" data-feather="trash" stroke-width="1"></i>
+          </form>
           {{else}}
           <form method="POST" action="/{{.ID}}/make-task-complete">
             <input class="godo-task__checkbox" type="checkbox" id="completed-{{.ID}}" name="completed" />
             <span class="godo-task__text">{{.Description}}</span>
+          </form>
+          <form method="POST" action="/{{.ID}}/delete">
+            <i class="godo-task__trash" data-feather="trash" stroke-width="1"></i>
           </form>
           {{end}}
         </li>

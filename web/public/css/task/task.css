@@ -28,7 +28,10 @@
 .godo-task__item {
   align-items: center;
   border-bottom: 1px solid var(--separator);
+  cursor: pointer;
   display: flex;
+  height: 65px;
+  justify-content: space-between;
   padding-bottom: 28px;
   padding-top: 12px;
 }
@@ -53,6 +56,21 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.godo-task__trash {
+  color: var(--text-tertiary-color);
+  display: none;
+  height: 20px;
+  width: 20px;
+}
+
+.godo-task__trash:hover {
+  color: var(--danger);
+}
+
+.godo-task__item:hover .godo-task__trash {
+  display: initial;
 }
 
 .godo-task__input {

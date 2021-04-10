@@ -12,4 +12,10 @@
       this.parentNode.submit();
     });
   });
+
+  document.querySelectorAll(".godo-task__trash").forEach(function (it) {
+    it.addEventListener("click", function () {
+      this.parentNode.submit();
+    });
+  });
 })();
