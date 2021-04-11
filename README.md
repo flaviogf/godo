@@ -11,7 +11,7 @@
 
 ## :rocket: Project
 
-:speech_balloon: Godo is a todo list implemented in go
+:blue_book: Godo is a todo list implemented in go
 
 ![web](/.github/web.gif)
 
